@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Form, Message } from 'semantic-ui-react'
 
-import Logo from '../assets/logo.png'
+import Knife from '../assets/knife.png'
 import Head from '../components/Head'
 //import './style.css'
 
@@ -76,17 +76,18 @@ export default class Main extends Component {
                     width: "100vw",
                     backgroundColor: "#F6F6F6"
                 }}>
-                    <img src={Logo} style={{
-                        width: 60,
+                    <img src={Knife} style={{
+                        width: 80,
                         height: 'auto',
                         margin: '50px auto 0'
                     }}/>
                     <h1 style={{
                         margin: "15px auto 50px",
-                        fontFamily: "Comfortaa, sans-serif",
-                        fontSize: 27,
-                        fontWeight: 'bold',
-                    }}>URL Shortner</h1>
+                        fontFamily: "Concert One, cursive",
+                        fontSize: 30,
+                        fontWeight: 'lighter',
+                        color: "#000",
+                    }}>Url Shortner</h1>
                     <div style={{
                         margin: "0 auto",
                     }}>
