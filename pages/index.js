@@ -40,7 +40,7 @@ export default class Main extends Component{
         return (
             <>
                 <Head />
-                <div style={Styles.shortnerContainer}>
+                <div className="shortner-container">
                     <Input 
                         loading={this.state.loading} 
                         icon='keyboard outline' 
