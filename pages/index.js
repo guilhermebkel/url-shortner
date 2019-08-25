@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Input } from 'semantic-ui-react'
 
 import Head from '../components/Head'
-import { Styles } from './style.js'
+import './style.css'
 
 import UrlShortnerService from '../services'
 
