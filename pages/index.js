@@ -38,27 +38,15 @@ export default class Main extends Component{
         }
 
         const response = await UrlShortnerService.createShortUrl(data.url, data.id)
-        
-        if(!response.result){
-            return this.setState({
-                url: '',
-                shortName: '',
-                shortUrl: '',
-                loading: false,
-                success: false,
-                error: true,
-                errorMessage: response.message
-            })
-        }
 
         this.setState({ 
             url: '',
             shortName: '',
-            shortUrl: response.short_url,
+            shortUrl: !response.result ? '' : response.short_url,
             loading: false,
-            success: true,
-            error: false,
-            errorMessage: ''
+            success: !response.result ? false : true,
+            error: !response.result ? true : false,
+            errorMessage: !response.result ? response.message : ''
         })
     }
 
@@ -77,12 +65,14 @@ export default class Main extends Component{
                             icon='keyboard outline' 
                             placeholder='Type a url...' 
                             onChange={event => this.handleChange('url', event.target.value)}
+                            value={this.state.url}
                             required
                         />
                         <Input 
                             label={API + '/u/'}
                             placeholder='Type a shortname...' 
                             onChange={event => this.handleChange('shortName', event.target.value)}
+                            value={this.state.shortName}
                         />
                     </Form.Group>
                     <Message
