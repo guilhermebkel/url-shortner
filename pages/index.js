@@ -17,10 +17,12 @@ export default class Main extends Component{
             success: false,
             error: false,
             errorMessage: '',
+            isCopied: false,
         }
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleCopy = this.handleCopy.bind(this)
     }
 
     handleChange(key, value){
@@ -30,7 +32,7 @@ export default class Main extends Component{
     }
 
     async handleSubmit(){
-        this.setState({ loading: true })
+        this.setState({ loading: true, isCopied: false })
 
         const data = {
             url: this.state.url,
@@ -40,7 +42,7 @@ export default class Main extends Component{
         const response = await UrlShortnerService.createShortUrl(data.url, data.id)
 
         this.setState({ 
-            url: '',
+            url: !response.result ? this.state.url : '',
             shortName: '',
             shortUrl: !response.result ? '' : response.short_url,
             loading: false,
@@ -48,6 +50,20 @@ export default class Main extends Component{
             error: !response.result ? true : false,
             errorMessage: !response.result ? response.message : ''
         })
+    }
+
+    handleCopy(){
+        var shortUrlField = document.getElementById('short-url')
+        
+        shortUrlField.select();
+        console.log(shortUrlField.select())
+        shortUrlField.setSelectionRange(0, 99999)
+        document.execCommand('copy')
+        
+        this.setState({ isCopied: true })
+        setTimeout(() => {
+            this.setState({ isCopied: false })
+        }, 2000)
     }
 
     render(){
@@ -88,11 +104,13 @@ export default class Main extends Component{
                     <Button>Submit</Button>
                 </Form>
                     <Input
+                        id="short-url"
                         action={{
-                            color: 'black',
+                            color: this.state.isCopied ? 'green' : 'black',
                             labelPosition: 'right',
                             icon: 'copy',
-                            content: 'Copy',
+                            content: this.state.isCopied ? 'Copied!' : 'Copy',
+                            onClick: this.handleCopy
                         }}
                         value={this.state.shortUrl}
                     />
