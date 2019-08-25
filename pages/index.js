@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Input } from 'semantic-ui-react'
+import { Input, Form, Message, Button } from 'semantic-ui-react'
 
 import Head from '../components/Head'
 import './style.css'
 
-import UrlShortnerService from '../services'
+import UrlShortnerService, { API } from '../services'
 
 export default class Main extends Component{
     constructor(props){
@@ -14,10 +14,13 @@ export default class Main extends Component{
             shortName: '',
             shortUrl: '',
             loading: false,
+            success: false,
+            error: false,
+            errorMessage: '',
         }
 
         this.handleChange = this.handleChange.bind(this)
-        this.handleNewShortUrl = this.handleNewShortUrl.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange(key, value){
@@ -26,32 +29,74 @@ export default class Main extends Component{
         })
     }
 
-    async handleNewShortUrl(){
+    async handleSubmit(){
+        this.setState({ loading: true })
+
         const data = {
             url: this.state.url,
             id: this.state.shortName.length ? this.state.shortName : undefined
         }
 
-        const { short_url } = await UrlShortnerService.createShortUrl('www.teste.com')
-        this.setState({ shortUrl: short_url })
+        const response = await UrlShortnerService.createShortUrl(data.url, data.id)
+        
+        if(!response.result){
+            return this.setState({
+                url: '',
+                shortName: '',
+                shortUrl: '',
+                loading: false,
+                success: false,
+                error: true,
+                errorMessage: response.message
+            })
+        }
+
+        this.setState({ 
+            url: '',
+            shortName: '',
+            shortUrl: response.short_url,
+            loading: false,
+            success: true,
+            error: false,
+            errorMessage: ''
+        })
     }
 
     render(){
         return (
             <>
                 <Head />
-                <div className="shortner-container">
-                    <Input 
-                        loading={this.state.loading} 
-                        icon='keyboard outline' 
-                        placeholder='Type a url...' 
-                        onChange={event => this.handleChange('url', event.target.value)}
+                <Form 
+                    loading={this.state.loading} 
+                    onSubmit={this.handleSubmit} 
+                    success={this.state.success}
+                    error={this.state.error}
+                >
+                    <Form.Group widths='equal'>
+                        <Form.Input 
+                            icon='keyboard outline' 
+                            placeholder='Type a url...' 
+                            onChange={event => this.handleChange('url', event.target.value)}
+                            required
+                        />
+                        <Input 
+                            label={API + '/u/'}
+                            placeholder='Type a shortname...' 
+                            onChange={event => this.handleChange('shortName', event.target.value)}
+                        />
+                    </Form.Group>
+                    <Message
+                        success
+                        header='Done!'
+                        content="Your new short url is shown below!"
                     />
-                    <Input 
-                        label='gbkel.herokuapp.com/u/' 
-                        placeholder='Type a shortname...' 
-                        onChange={event => this.handleChange('shortName', event.target.value)}
+                    <Message
+                        error
+                        header='Error!'
+                        content={this.state.errorMessage}
                     />
+                    <Button>Submit</Button>
+                </Form>
                     <Input
                         action={{
                             color: 'black',
@@ -61,8 +106,6 @@ export default class Main extends Component{
                         }}
                         value={this.state.shortUrl}
                     />
-                </div>
-
             </>
         )
     }

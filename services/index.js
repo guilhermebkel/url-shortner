@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3939' : 'https://gbkel.herokuapp.com'
+export const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3939' : 'https://gbkel.herokuapp.com'
 
 class UrlShortnerService {
     async createShortUrl(url, id = undefined){
