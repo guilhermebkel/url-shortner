@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Input, Form, Message, Button } from 'semantic-ui-react'
+import { Input, Form, Message } from 'semantic-ui-react'
 
+import Logo from '../assets/logo.png'
 import Head from '../components/Head'
-import './style.css'
+//import './style.css'
 
 import UrlShortnerService, { API } from '../services'
 
@@ -69,13 +70,25 @@ export default class Main extends Component {
             <>
                 <Head />
                 <div style={{
-                    display: 'flex',
+                    display: "flex",
+                    flexDirection: "column",
                     height: "100vh",
                     width: "100vw",
                     backgroundColor: "#F6F6F6"
                 }}>
+                    <img src={Logo} style={{
+                        width: 60,
+                        height: 'auto',
+                        margin: '50px auto 0'
+                    }}/>
+                    <h1 style={{
+                        margin: "15px auto 50px",
+                        fontFamily: "Comfortaa, sans-serif",
+                        fontSize: 27,
+                        fontWeight: 'bold',
+                    }}>URL Shortner</h1>
                     <div style={{
-                        margin: '50px auto',
+                        margin: "0 auto",
                     }}>
                         <Form
                             loading={this.state.loading}
