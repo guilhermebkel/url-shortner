@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-export const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3939' : 'https://api.guilherr.me'
+export const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3939' : 'https://old-api.guilherr.me'
 
 class UrlShortnerService {
     async createShortUrl(url, id = undefined){
